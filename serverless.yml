@@ -6,10 +6,11 @@ provider:
   region: us-west-2
   profile: demodayorder
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self.provider.stage}
+    # DYNAMODB_TABLE: ${self:service}-${opt:stage, self.provider.stage}
     SLACK_OAUTH_TOKEN: ${env:SLACK_OAUTH_TOKEN}
     TEAM_LIST: ${env:TEAM_LIST}
     SLACK_SIGNING_SECRET: ${env:SLACK_SIGNING_SECRET}
+    SLACK_CHANNEL_ID: ${env:SLACK_CHANNEL_ID}
 
 functions:
   app:

@@ -12,7 +12,7 @@ from utils import generate_demo_order_blocks
 from utils import verify
 from utils import verify_is_valid_demo_day
 
-# channel_id = os.environ["SLACK_CHANNEL_ID"]
+channel_id = os.environ["SLACK_CHANNEL_ID"]
 slack_token = os.environ["SLACK_OAUTH_TOKEN"]
 sc = WebClient(token=slack_token)
 
@@ -71,7 +71,7 @@ def slash_get_list():
 def post_scheduled_demo_order_msg(event, context):
     if verify_is_valid_demo_day():
         sc.chat_postMessage(
-            channel="C01GK7J30A3",  # update to accept a custom channel id
+            channel=channel_id,
             blocks=generate_demo_order_blocks(
                     "It's Demo Day! Here are the order of presentations:"
                 ),
