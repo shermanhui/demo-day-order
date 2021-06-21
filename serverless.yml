@@ -24,7 +24,7 @@ functions:
   cronPostScheduledMsg:
     handler: app.post_scheduled_demo_order_msg
     events:
-      - schedule: cron(0 16 ? * 5 *) # runs weekly on Thurs at 8am
+      - schedule: cron(30 15 ? * 5 *) # runs weekly on Thurs at 08:30
 
 custom:
   wsgi:
