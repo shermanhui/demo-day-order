@@ -1,0 +1,44 @@
+service: demo-day-order
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: us-west-2
+  profile: demodayorder
+  environment:
+    # DYNAMODB_TABLE: ${self:service}-${opt:stage, self.provider.stage}
+    SLACK_OAUTH_TOKEN: ${env:SLACK_OAUTH_TOKEN}
+    TEAM_LIST: ${env:TEAM_LIST}
+    SLACK_SIGNING_SECRET: ${env:SLACK_SIGNING_SECRET}
+    SLACK_CHANNEL_ID: ${env:SLACK_CHANNEL_ID}
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    events:
+      - http: ANY /
+  slackGetList:
+    handler: wsgi_handler.handler
+    events:
+      - http: 'POST /slash-get-list'
+  cronPostScheduledMsg:
+    handler: app.post_scheduled_demo_order_msg
+    events:
+      - schedule: cron(30 15 ? * 5 *) # runs weekly on Thurs at 08:30
+
+custom:
+  wsgi:
+    app: app.app
+    pythonBin: python3 # Some systems with Python3 may require this
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: non-linux
+
+plugins:
+  - serverless-wsgi
+  - serverless-python-requirements
+
+package:
+  exclude:
+    - node_modules/**
+    - venv/**
